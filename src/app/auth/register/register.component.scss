@@ -1,0 +1,200 @@
+/* ===============================
+   AUTH LAYOUT (REGISTER PAGE)
+================================ */
+
+.auth-container {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+/* LEFT / RIGHT PANELS */
+.auth-left,
+.auth-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===============================
+   LEFT PANEL (FORM)
+================================ */
+
+.auth-left {
+  background: #ffffff;
+}
+
+.auth-form {
+  width: 380px;
+}
+
+.logo {
+  margin-bottom: 20px;
+
+  .logo-icon {
+    background: #3b82f6;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 18px;
+    display: inline-block;
+  }
+}
+
+h2 {
+  font-size: 26px;
+  margin-bottom: 6px;
+  color: #111827;
+}
+
+.subtitle {
+  color: #6b7280;
+  margin-bottom: 25px;
+  font-size: 14px;
+}
+
+/* ===============================
+   FORM CONTROLS
+================================ */
+
+.form-group {
+  margin-bottom: 15px;
+
+  label {
+    display: block;
+    font-size: 14px;
+    color: #374151;
+    margin-bottom: 6px;
+  }
+
+  input,
+  select {
+    width: 100%;
+    padding: 11px 12px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    outline: none;
+
+    &:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+    }
+  }
+}
+
+/* TERMS */
+.terms {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: #374151;
+  margin: 15px 0;
+
+  input {
+    margin-right: 8px;
+  }
+
+  a {
+    color: #3b82f6;
+    text-decoration: none;
+  }
+}
+
+/* BUTTON */
+.primary-btn {
+  width: 100%;
+  background: #3b82f6;
+  color: #ffffff;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 5px;
+
+  &:hover {
+    background: #2563eb;
+  }
+}
+
+/* SWITCH LINK */
+.switch {
+  margin-top: 20px;
+  font-size: 14px;
+  text-align: center;
+
+  a {
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: 500;
+  }
+}
+
+/* ===============================
+   RIGHT PANEL (BLUE SECTION)
+================================ */
+
+.auth-right {
+  background: linear-gradient(180deg, #3b82f6, #2563eb);
+  color: #ffffff;
+  padding: 80px;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.auth-right h1 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  line-height: 1.3;
+}
+
+.auth-right p {
+  max-width: 420px;
+  font-size: 15px;
+  opacity: 0.95;
+  margin-bottom: 40px;
+}
+
+/* ===============================
+   STATS CARDS
+================================ */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.stat {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 20px;
+  border-radius: 14px;
+  font-size: 22px;
+  font-weight: 700;
+
+  span {
+    display: block;
+    font-size: 14px;
+    font-weight: 400;
+    opacity: 0.9;
+    margin-top: 6px;
+  }
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 900px) {
+  .auth-right {
+    display: none;
+  }
+
+  .auth-left {
+    flex: 1;
+  }
+}

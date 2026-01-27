@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -9,5 +9,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./stat-card.component.scss']
 })
 export class StatCardComponent {
-
+  @Input() title!: string;
+  @Input() value!: string | number;
+  @Input() color: 'blue' | 'green' | 'orange' | 'red' = 'blue';
 }

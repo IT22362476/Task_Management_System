@@ -1,9 +1,16 @@
-<app-sidebar></app-sidebar>
+<div class="layout">
+  <ng-container *ngIf="role === 'admin'; else employeeSidebar">
+    <app-admin-sidebar></app-admin-sidebar>
+  </ng-container>
 
-<div class="main-content">
-  <app-header></app-header>
+  <ng-template #employeeSidebar>
+    <app-employee-sidebar></app-employee-sidebar>
+  </ng-template>
 
-  <div class="page-content">
-    <router-outlet></router-outlet>
+  <div class="main-content">
+    <app-header></app-header>
+    <div class="page-content">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>

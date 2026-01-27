@@ -1,0 +1,32 @@
+<h1>Welcome back, Sarah 👋</h1>
+<p class="subtitle">Here's what's happening with your tasks today</p>
+
+<div class="stats">
+    <app-stat-card title="Total Tasks" value="3"></app-stat-card>
+    <app-stat-card title="Completed" value="1" color="green"></app-stat-card>
+    <app-stat-card title="In Progress" value="0" color="orange"></app-stat-card>
+    <app-stat-card title="Pending" value="2"></app-stat-card>
+</div>
+
+<div class="grid">
+    <div class="card">
+        <h3>Upcoming Deadlines</h3>
+        <ul>
+            <li>User testing sessions – 2025-02-02</li>
+            <li>Mobile responsive testing – 2025-02-08</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>Recent Activity</h3>
+        <app-activity-item title="Completed task" subtitle="Design homepage mockup" time="2 hours ago" icon="check">
+        </app-activity-item>
+
+        <app-activity-item title="Updated status" subtitle="User testing sessions" time="5 hours ago" icon="edit">
+        </app-activity-item>
+
+        <app-activity-item title="Added comment" subtitle="Mobile responsive testing" time="1 day ago" icon="comment">
+        </app-activity-item>
+
+    </div>
+</div>
