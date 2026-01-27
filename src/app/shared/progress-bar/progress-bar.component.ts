@@ -8,5 +8,5 @@ import { Component, Input } from '@angular/core';
 })
 export class ProgressBarComponent {
   @Input() label!: string;
-  @Input() percent!: string;
+  @Input() percent!: number;
 }

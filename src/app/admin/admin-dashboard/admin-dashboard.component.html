@@ -1,51 +1,176 @@
-<!-- HEADER ROW -->
 <div class="dashboard-header">
-  <div>
-    <h1>Dashboard</h1>
-    <p class="subtitle">
-      Overview of all projects and tasks across your organization
-    </p>
-  </div>
+  <div class="header-content">
+    <div class="greeting">
+      <h1>Welcome back, John</h1>
+      <p class="subtitle">Here's what's happening with your team today</p>
+    </div>
 
-  <!-- Project selector -->
-  <div class="project-filter">
-    <label>View:</label>
-    <select (change)="onProjectChange($event)">
-      <option value="all">All Projects (Overview)</option>
-      <option *ngFor="let project of projects" [value]="project.id">
-        {{ project.name }}
-      </option>
-    </select>
+    <div class="header-actions">
+      <div class="project-filter">
+        <label>Project:</label>
+        <select (change)="onProjectChange($event)">
+          <option value="all">All Projects</option>
+          <option *ngFor="let project of projects" [value]="project.id">
+            {{ project.name }}
+          </option>
+        </select>
+      </div>
+      <button class="primary-btn">+ New Task</button>
+    </div>
   </div>
 </div>
 
-<!-- STATS -->
-<div class="stats">
+<div class="stats-grid">
   <app-stat-card title="Total Tasks" [value]="stats.total"></app-stat-card>
   <app-stat-card title="Completed" [value]="stats.completed" color="green"></app-stat-card>
   <app-stat-card title="Pending" [value]="stats.pending" color="orange"></app-stat-card>
   <app-stat-card title="Overdue" [value]="stats.overdue" color="red"></app-stat-card>
 </div>
 
-<!-- GRID -->
-<div class="grid">
-  <div class="card">
-    <h3>Project Progress</h3>
+<div class="dashboard-grid">
+  <div class="main-content">
+    <div class="card progress-card">
+      <div class="card-header">
+        <h3>Project Progress</h3>
+        <button class="btn-link">View All</button>
+      </div>
 
-    <app-progress-bar
-      *ngFor="let p of progress"
-      [label]="p.name"
-      [percent]="p.percent">
-    </app-progress-bar>
+      <div class="progress-list">
+        <app-progress-bar
+          *ngFor="let p of progress"
+          [label]="p.name"
+          [percent]="p.percent">
+        </app-progress-bar>
+      </div>
+    </div>
+
+    <div class="card task-distribution">
+      <div class="card-header">
+        <h3>Task Distribution</h3>
+        <div class="time-filter">
+          <button class="filter-btn active">Week</button>
+          <button class="filter-btn">Month</button>
+          <button class="filter-btn">Year</button>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <div class="status-bars">
+          <div class="status-bar">
+            <div class="bar-label">
+              <span class="label-text">To Do</span>
+              <span class="label-value">{{ stats.todo }}</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill todo" [style.width.%]="(stats.todo / stats.total) * 100"></div>
+            </div>
+          </div>
+
+          <div class="status-bar">
+            <div class="bar-label">
+              <span class="label-text">In Progress</span>
+              <span class="label-value">{{ stats.inProgress }}</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill progress" [style.width.%]="(stats.inProgress / stats.total) * 100"></div>
+            </div>
+          </div>
+
+          <div class="status-bar">
+            <div class="bar-label">
+              <span class="label-text">Review</span>
+              <span class="label-value">{{ stats.review }}</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill review" [style.width.%]="(stats.review / stats.total) * 100"></div>
+            </div>
+          </div>
+
+          <div class="status-bar">
+            <div class="bar-label">
+              <span class="label-text">Completed</span>
+              <span class="label-value">{{ stats.completed }}</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill completed" [style.width.%]="(stats.completed / stats.total) * 100"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="card">
-    <h3>Task Status</h3>
-    <ul>
-      <li>To Do: {{ stats.todo }}</li>
-      <li>In Progress: {{ stats.inProgress }}</li>
-      <li>Review: {{ stats.review }}</li>
-      <li>Completed: {{ stats.completed }}</li>
-    </ul>
+  <div class="sidebar-content">
+    <div class="card team-activity">
+      <div class="card-header">
+        <h3>Team Activity</h3>
+      </div>
+
+      <div class="activity-list">
+        <div class="activity-item">
+          <img src="https://i.pravatar.cc/40?img=1" alt="User" class="avatar">
+          <div class="activity-info">
+            <p class="activity-text"><strong>Sarah Johnson</strong> completed a task</p>
+            <span class="activity-time">2 hours ago</span>
+          </div>
+        </div>
+
+        <div class="activity-item">
+          <img src="https://i.pravatar.cc/40?img=2" alt="User" class="avatar">
+          <div class="activity-info">
+            <p class="activity-text"><strong>Mike Chen</strong> updated project status</p>
+            <span class="activity-time">4 hours ago</span>
+          </div>
+        </div>
+
+        <div class="activity-item">
+          <img src="https://i.pravatar.cc/40?img=3" alt="User" class="avatar">
+          <div class="activity-info">
+            <p class="activity-text"><strong>Emily Davis</strong> added new task</p>
+            <span class="activity-time">5 hours ago</span>
+          </div>
+        </div>
+
+        <div class="activity-item">
+          <img src="https://i.pravatar.cc/40?img=4" alt="User" class="avatar">
+          <div class="activity-info">
+            <p class="activity-text"><strong>Alex Kumar</strong> commented on issue</p>
+            <span class="activity-time">1 day ago</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card upcoming-deadlines">
+      <div class="card-header">
+        <h3>Upcoming Deadlines</h3>
+      </div>
+
+      <div class="deadline-list">
+        <div class="deadline-item urgent">
+          <div class="deadline-dot"></div>
+          <div class="deadline-info">
+            <p class="deadline-title">Website Redesign</p>
+            <span class="deadline-date">Due in 2 days</span>
+          </div>
+        </div>
+
+        <div class="deadline-item warning">
+          <div class="deadline-dot"></div>
+          <div class="deadline-info">
+            <p class="deadline-title">Mobile App Testing</p>
+            <span class="deadline-date">Due in 5 days</span>
+          </div>
+        </div>
+
+        <div class="deadline-item normal">
+          <div class="deadline-dot"></div>
+          <div class="deadline-info">
+            <p class="deadline-title">Marketing Campaign</p>
+            <span class="deadline-date">Due in 1 week</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

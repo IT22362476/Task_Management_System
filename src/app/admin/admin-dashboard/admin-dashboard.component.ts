@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { StatCardComponent } from "src/app/shared/components/stat-card/stat-card.component";
 import { ProgressBarComponent } from "src/app/shared/progress-bar/progress-bar.component";
 
@@ -7,7 +8,7 @@ import { ProgressBarComponent } from "src/app/shared/progress-bar/progress-bar.c
   standalone: true,
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.scss'],
-  imports: [StatCardComponent, ProgressBarComponent]
+  imports: [CommonModule, StatCardComponent, ProgressBarComponent]
 })
 export class AdminDashboardComponent {
 
