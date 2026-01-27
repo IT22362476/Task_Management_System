@@ -1,0 +1,51 @@
+<!-- HEADER ROW -->
+<div class="dashboard-header">
+  <div>
+    <h1>Dashboard</h1>
+    <p class="subtitle">
+      Overview of all projects and tasks across your organization
+    </p>
+  </div>
+
+  <!-- Project selector -->
+  <div class="project-filter">
+    <label>View:</label>
+    <select (change)="onProjectChange($event)">
+      <option value="all">All Projects (Overview)</option>
+      <option *ngFor="let project of projects" [value]="project.id">
+        {{ project.name }}
+      </option>
+    </select>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <app-stat-card title="Total Tasks" [value]="stats.total"></app-stat-card>
+  <app-stat-card title="Completed" [value]="stats.completed" color="green"></app-stat-card>
+  <app-stat-card title="Pending" [value]="stats.pending" color="orange"></app-stat-card>
+  <app-stat-card title="Overdue" [value]="stats.overdue" color="red"></app-stat-card>
+</div>
+
+<!-- GRID -->
+<div class="grid">
+  <div class="card">
+    <h3>Project Progress</h3>
+
+    <app-progress-bar
+      *ngFor="let p of progress"
+      [label]="p.name"
+      [percent]="p.percent">
+    </app-progress-bar>
+  </div>
+
+  <div class="card">
+    <h3>Task Status</h3>
+    <ul>
+      <li>To Do: {{ stats.todo }}</li>
+      <li>In Progress: {{ stats.inProgress }}</li>
+      <li>Review: {{ stats.review }}</li>
+      <li>Completed: {{ stats.completed }}</li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,63 @@
+.stat-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  min-width: 220px;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+
+  .title {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 6px;
+  }
+
+  .value {
+    font-size: 32px;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  .icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    span {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      background: currentColor;
+    }
+  }
+
+  &.blue {
+    color: #3b82f6;
+    background: linear-gradient(135deg, #ffffff, #eff6ff);
+  }
+
+  &.green {
+    color: #22c55e;
+    background: linear-gradient(135deg, #ffffff, #ecfdf5);
+  }
+
+  &.orange {
+    color: #f59e0b;
+    background: linear-gradient(135deg, #ffffff, #fffbeb);
+  }
+
+  &.red {
+    color: #ef4444;
+    background: linear-gradient(135deg, #ffffff, #fef2f2);
+  }
+}

@@ -1,0 +1,13 @@
+<div class="activity-item">
+  <div class="icon" [ngClass]="icon">
+    <span *ngIf="icon === 'check'">✔</span>
+    <span *ngIf="icon === 'edit'">✎</span>
+    <span *ngIf="icon === 'comment'">💬</span>
+  </div>
+
+  <div class="content">
+    <div class="title">{{ title }}</div>
+    <div class="subtitle">{{ subtitle }}</div>
+    <div class="time">{{ time }}</div>
+  </div>
+</div>

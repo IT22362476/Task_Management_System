@@ -4,10 +4,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { MainLayoutComponent } from './core/layout/main-layout/main-layout.component';
-import { DashboardComponent as AdminDashboard } from './admin/dashboard/dashboard.component';
-import { DashboardComponent as EmployeeDashboard } from './employee/dashboard/dashboard.component';
+import { AdminDashboardComponent as AdminDashboard } from './admin/admin-dashboard/admin-dashboard.component';
+import { EmployeeDashboardComponent as EmployeeDashboard } from './employee/employee-dashboard/employee-dashboard.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
 
@@ -23,8 +25,9 @@ const routes: Routes = [
   { path: '**', redirectTo: 'login' }
 ];
 
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
