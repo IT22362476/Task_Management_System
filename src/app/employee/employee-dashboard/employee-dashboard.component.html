@@ -1,24 +1,57 @@
-<h1>Welcome back, Sarah 👋</h1>
-<p class="subtitle">Here's what's happening with your tasks today</p>
-
-<div class="stats">
-    <app-stat-card title="Total Tasks" value="3"></app-stat-card>
-    <app-stat-card title="Completed" value="1" color="green"></app-stat-card>
-    <app-stat-card title="In Progress" value="0" color="orange"></app-stat-card>
-    <app-stat-card title="Pending" value="2"></app-stat-card>
+<div class="dashboard-header">
+  <div class="header-content">
+    <div class="greeting">
+      <h1>Welcome back, Sarah</h1>
+      <p class="subtitle">Stay on top of your tasks and deadlines</p>
+    </div>
+    <div class="header-actions">
+      <button class="primary-btn">+ New Task</button>
+    </div>
+  </div>
 </div>
 
-<div class="grid">
-    <div class="card">
+<div class="stats-grid">
+  <app-stat-card title="Total Tasks" value="3"></app-stat-card>
+  <app-stat-card title="Completed" value="1" color="green"></app-stat-card>
+  <app-stat-card title="In Progress" value="0" color="orange"></app-stat-card>
+  <app-stat-card title="Pending" value="2"></app-stat-card>
+</div>
+
+<div class="dashboard-grid">
+  <div class="main-content">
+    <div class="card deadlines-card">
+      <div class="card-header">
         <h3>Upcoming Deadlines</h3>
-        <ul>
-            <li>User testing sessions – 2025-02-02</li>
-            <li>Mobile responsive testing – 2025-02-08</li>
-        </ul>
+        <button class="btn-link">View All</button>
+      </div>
+
+      <div class="deadlines-list">
+        <div class="deadline-item urgent">
+          <div class="deadline-dot"></div>
+          <div class="deadline-info">
+            <p class="deadline-title">User testing sessions</p>
+            <span class="deadline-date">Due Feb 2, 2025</span>
+            <span class="deadline-days">2 days away</span>
+          </div>
+        </div>
+
+        <div class="deadline-item warning">
+          <div class="deadline-dot"></div>
+          <div class="deadline-info">
+            <p class="deadline-title">Mobile responsive testing</p>
+            <span class="deadline-date">Due Feb 8, 2025</span>
+            <span class="deadline-days">8 days away</span>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="card">
+    <div class="card recent-activity-card">
+      <div class="card-header">
         <h3>Recent Activity</h3>
+      </div>
+
+      <div class="activity-list">
         <app-activity-item title="Completed task" subtitle="Design homepage mockup" time="2 hours ago" icon="check">
         </app-activity-item>
 
@@ -27,6 +60,68 @@
 
         <app-activity-item title="Added comment" subtitle="Mobile responsive testing" time="1 day ago" icon="comment">
         </app-activity-item>
-
+      </div>
     </div>
+  </div>
+
+  <div class="sidebar-content">
+    <div class="card progress-card">
+      <div class="card-header">
+        <h3>Your Progress</h3>
+      </div>
+
+      <div class="progress-container">
+        <div class="progress-circle">
+          <div class="circle-content">
+            <span class="circle-value">33%</span>
+            <span class="circle-label">Complete</span>
+          </div>
+          <svg class="circle-progress" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="45" class="circle-bg"></circle>
+            <circle cx="50" cy="50" r="45" class="circle-fill" style="stroke-dashoffset: calc(283 * (1 - 0.33))"></circle>
+          </svg>
+        </div>
+
+        <div class="progress-stats">
+          <div class="stat-row">
+            <span class="stat-label">Completed</span>
+            <span class="stat-value completed">1</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">In Progress</span>
+            <span class="stat-value progress">0</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Pending</span>
+            <span class="stat-value pending">2</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card quick-links-card">
+      <div class="card-header">
+        <h3>Quick Links</h3>
+      </div>
+
+      <div class="quick-links-list">
+        <a href="#" class="quick-link">
+          <span class="link-icon">📋</span>
+          <span class="link-text">View All Tasks</span>
+        </a>
+        <a href="#" class="quick-link">
+          <span class="link-icon">👥</span>
+          <span class="link-text">Team Members</span>
+        </a>
+        <a href="#" class="quick-link">
+          <span class="link-icon">📊</span>
+          <span class="link-text">Performance Report</span>
+        </a>
+        <a href="#" class="quick-link">
+          <span class="link-icon">⚙️</span>
+          <span class="link-text">Settings</span>
+        </a>
+      </div>
+    </div>
+  </div>
 </div>
