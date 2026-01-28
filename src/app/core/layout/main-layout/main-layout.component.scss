@@ -1,6 +1,6 @@
 .layout {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
 }
 
 .main-content {
@@ -8,8 +8,12 @@
   background: #f8fafc;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .page-content {
+  flex: 1;
   padding: 24px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
