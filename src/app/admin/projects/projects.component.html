@@ -1,1 +1,61 @@
-<p>projects works!</p>
+<div class="page-header">
+  <div class="header-left">
+    <h1>Projects</h1>
+    <p class="subtitle">Manage and track all your projects in one place</p>
+  </div>
+
+  <div class="header-right">
+    <div class="status-filter">
+      <button class="filter-btn active">All Projects</button>
+      <button class="filter-btn">Planning</button>
+      <button class="filter-btn">In Progress</button>
+      <button class="filter-btn">Completed</button>
+      <button class="filter-btn">On Hold</button>
+    </div>
+
+    <button class="primary-btn">+ Create Project</button>
+  </div>
+</div>
+
+<div class="projects-grid">
+  <div class="project-card" *ngFor="let project of projects">
+    <div class="card-top">
+      <h3>{{ project.name }}</h3>
+      <span
+        class="status-pill"
+        [ngClass]="project.status.toLowerCase().replace(' ', '-')"
+      >
+        {{ project.status }}
+      </span>
+    </div>
+
+    <p class="description">{{ project.description }}</p>
+
+    <div class="owner">
+      <img [src]="project.ownerAvatar" class="avatar" />
+      <span class="owner-name">{{ project.owner }}</span>
+    </div>
+
+    <div class="progress-section">
+      <div class="progress-label">
+        <span>Progress</span>
+        <span class="percent">{{ project.progress }}%</span>
+      </div>
+      <div class="progress-track">
+        <div
+          class="progress-fill"
+          [style.width.%]="project.progress"
+        ></div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span class="meta">
+        👥 {{ project.members }} members
+      </span>
+      <span class="meta">
+        ✅ {{ project.completedTasks }}/{{ project.totalTasks }} tasks
+      </span>
+    </div>
+  </div>
+</div>

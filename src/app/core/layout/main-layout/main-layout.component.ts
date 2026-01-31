@@ -19,5 +19,5 @@ import { EmployeeSidebarComponent } from "../sidebar/employee-sidebar/employee-s
   styleUrls: ['./main-layout.component.scss']
 })
 export class MainLayoutComponent {
-    role: 'admin' | 'employee' = 'admin';
+    role: 'admin' | 'employee' = 'employee';
 }
