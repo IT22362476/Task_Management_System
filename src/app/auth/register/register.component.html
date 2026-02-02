@@ -1,16 +1,42 @@
 <div class="auth-container">
   <div class="auth-right">
-    <h1>Start your journey with us today</h1>
-    <p>
-      Join thousands of teams already using our platform to boost productivity
-      and achieve their goals.
-    </p>
+    <div class="auth-right-content">
+      <div class="auth-badge">Join 10,000+ teams</div>
 
-    <div class="stats">
-      <div class="stat">10K+<span>Active Users</span></div>
-      <div class="stat">50K+<span>Tasks Completed</span></div>
-      <div class="stat">99.9%<span>Uptime</span></div>
-      <div class="stat">24/7<span>Support</span></div>
+      <h1>Start your journey with us today</h1>
+      <p>
+        Join thousands of teams already using our platform to boost productivity and achieve their goals.
+      </p>
+
+      <div class="benefits-list">
+        <div class="benefit-item">
+          <div class="benefit-icon">✓</div>
+          <span>No credit card required</span>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">✓</div>
+          <span>14-day free trial included</span>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">✓</div>
+          <span>Cancel anytime</span>
+        </div>
+      </div>
+
+      <div class="stats-container">
+        <div class="stat-item">
+          <div class="stat-value">50K+</div>
+          <div class="stat-desc">Tasks Completed</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">99.9%</div>
+          <div class="stat-desc">Uptime</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">24/7</div>
+          <div class="stat-desc">Support</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -26,42 +52,49 @@
       <form>
         <div class="form-group">
           <label>Full name</label>
-          <input placeholder="Enter your full name" />
+          <input type="text" placeholder="John Doe" />
         </div>
 
         <div class="form-group">
           <label>Email address</label>
-          <input type="email" placeholder="Enter your email" />
+          <input type="email" placeholder="you@example.com" />
         </div>
 
         <div class="form-group">
           <label>Role</label>
           <select>
-            <option>Employee</option>
-            <option>Admin</option>
+            <option value="">Select your role</option>
+            <option value="employee">Employee</option>
+            <option value="admin">Admin</option>
           </select>
         </div>
 
         <div class="form-group">
           <label>Password</label>
-          <input type="password" placeholder="Create a password" />
+          <input type="password" placeholder="••••••••" />
+          <small class="hint">At least 8 characters</small>
         </div>
 
         <div class="form-group">
           <label>Confirm password</label>
-          <input type="password" placeholder="Confirm your password" />
+          <input type="password" placeholder="••••••••" />
         </div>
 
         <label class="terms">
           <input type="checkbox" />
-          I agree to the Terms of Service and Privacy Policy
+          <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
         </label>
 
-        <button class="primary-btn">Create account →</button>
+        <button class="primary-btn">
+          <span>Create account</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
 
         <p class="switch">
           Already have an account?
-          <a routerLink="/login">Sign in</a>
+          <a routerLink="/login" class="switch-link">Sign in</a>
         </p>
       </form>
     </div>
