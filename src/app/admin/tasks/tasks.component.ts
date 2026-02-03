@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-tasks',
   templateUrl: './tasks.component.html',
-  styleUrls: ['./tasks.component.scss']
+  styleUrls: ['./tasks.component.scss'],
+  standalone: true,
+  imports: [CommonModule]
 })
 export class TasksComponent {
 
