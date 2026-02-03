@@ -1,9 +1,7 @@
 <div class="page-header">
   <div class="header-left">
-    <h1>My Tasks</h1>
-    <p class="subtitle">
-      Manage your assigned tasks across {{ projectsCount }} projects
-    </p>
+    <h1>All Tasks</h1>
+    <p class="subtitle">Manage all tasks across {{ projectsCount }} projects</p>
   </div>
 
   <div class="header-right">
@@ -11,38 +9,41 @@
       <option>All Projects</option>
       <option *ngFor="let p of projects">{{ p }}</option>
     </select>
+
+    <button class="primary-btn">+ Create Task</button>
   </div>
 </div>
 
-<!-- Stats -->
+<div class="search-bar">
+  <input
+    type="text"
+    placeholder="Search tasks by title, description, or assignee..."
+  />
+</div>
+
 <div class="task-stats">
   <div class="stat-card active">
     <h2>{{ stats.total }}</h2>
     <span>All Tasks</span>
   </div>
-
   <div class="stat-card">
     <h2>{{ stats.todo }}</h2>
     <span>To Do</span>
   </div>
-
   <div class="stat-card">
     <h2 class="blue">{{ stats.inProgress }}</h2>
     <span>In Progress</span>
   </div>
-
   <div class="stat-card">
     <h2 class="orange">{{ stats.review }}</h2>
     <span>Review</span>
   </div>
-
   <div class="stat-card">
     <h2 class="green">{{ stats.completed }}</h2>
     <span>Completed</span>
   </div>
 </div>
 
-<!-- Task List -->
 <div class="task-list">
   <div class="task-card" *ngFor="let task of tasks">
     <div class="task-main">
@@ -53,14 +54,17 @@
             {{ task.priority }}
           </span>
         </h3>
-
         <p>{{ task.description }}</p>
 
         <div class="task-meta">
           <span>📁 {{ task.project }}</span>
+          <span>👤 {{ task.assignee }}</span>
           <span>📅 Due: {{ task.dueDate }}</span>
 
-          <span class="tag" *ngFor="let tag of task.tags">
+          <span
+            class="tag"
+            *ngFor="let tag of task.tags"
+          >
             {{ tag }}
           </span>
         </div>
@@ -70,7 +74,6 @@
         <span class="status-pill" [ngClass]="task.status">
           {{ task.statusLabel }}
         </span>
-
         <a class="details-link">View Details →</a>
       </div>
     </div>
