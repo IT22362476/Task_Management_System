@@ -26,13 +26,14 @@
 }
 
 .menu-item {
+  text-decoration: none;   // 🔥 important
+  color: #475569;          // force color for <a>
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 10px 14px;
   border-radius: 10px;
   font-size: 14px;
-  color: #475569;
   cursor: pointer;
   transition: all 0.2s ease;
 
@@ -45,6 +46,11 @@
     color: #0284c7;
     font-weight: 600;
   }
+}
+
+.menu-item:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: 2px;
 }
 
 .user {

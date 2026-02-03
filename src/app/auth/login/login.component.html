@@ -8,15 +8,16 @@
       <h2>Welcome back</h2>
       <p class="subtitle">Sign in to your account to continue</p>
 
-      <form>
+      <form (ngSubmit)="login()" #loginForm="ngForm">
+
         <div class="form-group">
           <label>Email address</label>
-          <input type="email" placeholder="you@example.com" />
+          <input type="email" name="email" [(ngModel)]="email" placeholder="you@example.com" required />
         </div>
 
         <div class="form-group">
           <label>Password</label>
-          <input type="password" placeholder="••••••••" />
+          <input type="password" name="password" [(ngModel)]="password" placeholder="••••••••" required />
         </div>
 
         <div class="form-options">
@@ -27,10 +28,11 @@
           <a class="link">Forgot password?</a>
         </div>
 
-        <button class="primary-btn">
+        <button class="primary-btn" type="submit" [disabled]="loginForm.invalid">
           <span>Sign in</span>
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
           </svg>
         </button>
 
@@ -39,14 +41,11 @@
         </div>
 
         <div class="social-buttons">
-          <button type="button" class="social-btn google">
-            <span class="icon">G</span>
-            <span class="label">Google</span>
-          </button>
-          <button type="button" class="social-btn microsoft">
-            <span class="icon">⊞</span>
-            <span class="label">Microsoft</span>
-          </button>
+          <div class="google-btn-wrapper">
+            <asl-google-signin-button type="standard" size="large" shape="rectangular" theme="outline"
+              text="signin_with" [width]="300">
+            </asl-google-signin-button>
+          </div>
         </div>
 
         <p class="switch">
@@ -63,7 +62,8 @@
 
       <h1>Manage your tasks efficiently</h1>
       <p>
-        Streamline your workflow, collaborate with your team, and achieve your goals faster with our comprehensive task management solution.
+        Streamline your workflow, collaborate with your team, and achieve your goals faster with our comprehensive task
+        management solution.
       </p>
 
       <div class="features-grid">
