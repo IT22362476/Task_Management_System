@@ -5,12 +5,24 @@ export const API = {
     GOOGLE: '/auth/google',
     REFRESH: '/auth/refresh'
   },
-  ADMIN: {
-    PROJECTS: '/admin/projects',
-    TASKS: '/admin/tasks',
-    TEAM: '/admin/team'
+  PROJECTS: '/projects',
+  TASKS: '/tasks',
+  USERS: '/users',
+  TEAM: {
+    BASE: '/team',
+    STATS: '/team/stats',
+    MEMBERS: '/team/members'
   },
-  EMPLOYEE: {
-    MY_TASKS: '/employee/tasks'
+  DASHBOARD: {
+    ADMIN: '/dashboard/admin',
+    EMPLOYEE: '/dashboard/employee'
   }
 };
+
+export function projectLabelsUrl(projectId: string): string {
+  return `/projects/${projectId}/labels`;
+}
+
+export function projectMembersUrl(projectId: string): string {
+  return `/projects/${projectId}/members`;
+}

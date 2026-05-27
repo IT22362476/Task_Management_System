@@ -1,0 +1,76 @@
+<div class="page-header">
+  <div class="header-left">
+    <a routerLink="/admin/tasks" class="back-link">&larr; Back to Tasks</a>
+    <h1>Create Task</h1>
+    <p class="subtitle">Add a new task to your project</p>
+  </div>
+</div>
+
+<div class="loading-state" *ngIf="isLoading"><p>Loading...</p></div>
+
+<div class="form-card" *ngIf="!isLoading">
+  <div class="form-section">
+    <h2>Task Details</h2>
+
+    <div class="form-group">
+      <label for="title">Title <span class="required">*</span></label>
+      <input id="title" type="text" [(ngModel)]="form.title" placeholder="Enter task title" class="form-input" />
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" [(ngModel)]="form.description" placeholder="Describe the task in detail" rows="5" class="form-input"></textarea>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h2>Classification</h2>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="project">Project <span class="required">*</span></label>
+        <select id="project" [(ngModel)]="form.projectId" (change)="onProjectChange()" class="form-input">
+          <option *ngFor="let p of projects" [value]="p.id">{{ p.name }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="priority">Priority</label>
+        <select id="priority" [(ngModel)]="form.priority" class="form-input">
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="assignee">Assignee</label>
+        <select id="assignee" [(ngModel)]="form.assigneeId" class="form-input">
+          <option value="">Unassigned</option>
+          <option *ngFor="let m of projectMembers" [value]="m.id">{{ m.fullName }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="dueDate">Due Date</label>
+        <input id="dueDate" type="date" [(ngModel)]="form.dueDate" class="form-input" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="labels">Labels</label>
+      <input id="labels" type="text" [(ngModel)]="labelsInput" placeholder="e.g. bug, feature, design, ui/ux" class="form-input" />
+      <small class="hint">Separate labels with commas</small>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <a routerLink="/admin/tasks" class="btn ghost">Cancel</a>
+    <button class="primary-btn" (click)="submit()" [disabled]="isSubmitting">
+      <span *ngIf="!isSubmitting">Create Task</span>
+      <span *ngIf="isSubmitting">Creating...</span>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,88 @@
+<div class="page-header">
+  <div class="header-left">
+    <a routerLink="/admin/tasks" class="back-link">&larr; Back to Tasks</a>
+    <h1 *ngIf="task">{{ task.title }}</h1>
+  </div>
+  <div class="header-actions" *ngIf="task">
+    <a [routerLink]="['/admin/tasks/edit', taskId]" class="primary-btn">&#9998; Edit</a>
+    <button class="btn ghost danger" (click)="deleteTask()">&#128465; Delete</button>
+  </div>
+</div>
+
+<div class="loading-state" *ngIf="isLoading"><p>Loading task...</p></div>
+
+<ng-container *ngIf="!isLoading && task">
+  <div class="detail-grid">
+    <div class="form-card main-detail">
+      <p *ngIf="task.description" class="task-description">{{ task.description }}</p>
+      <p *ngIf="!task.description" class="task-description muted">No description</p>
+
+      <div class="detail-properties">
+        <div class="prop-row">
+          <span class="prop-label">Status</span>
+          <span class="status-pill" [ngClass]="task.status">{{ getStatusLabel(task.status) }}</span>
+        </div>
+        <div class="prop-row">
+          <span class="prop-label">Priority</span>
+          <span class="priority" [ngClass]="priorityClass(task.priority)">{{ task.priority }}</span>
+        </div>
+        <div class="prop-row">
+          <span class="prop-label">Project</span>
+          <span>{{ task.projectName }}</span>
+        </div>
+        <div class="prop-row" *ngIf="task.assigneeName">
+          <span class="prop-label">Assignee</span>
+          <span>{{ task.assigneeName }}</span>
+        </div>
+        <div class="prop-row" *ngIf="task.dueDate">
+          <span class="prop-label">Due Date</span>
+          <span>{{ task.dueDate }}</span>
+        </div>
+      </div>
+
+      <div class="labels-row" *ngIf="task.labels.length > 0">
+        <span class="tag" *ngFor="let tag of task.labels" [style.background]="tag.color + '20'"
+              [style.color]="tag.color">{{ tag.name }}</span>
+      </div>
+
+      <div class="comments-section">
+        <h3>Comments ({{ task.comments.length }})</h3>
+
+        <div class="comment" *ngFor="let c of task.comments">
+          <div class="comment-header">
+            <strong>{{ c.authorName }}</strong>
+            <small>{{ c.createdAt }}</small>
+          </div>
+          <p>{{ c.content }}</p>
+        </div>
+
+        <div class="add-comment">
+          <textarea [(ngModel)]="newComment" placeholder="Add a comment..." rows="3" class="form-input"></textarea>
+          <button class="primary-btn" (click)="addComment()" [disabled]="!newComment.trim()">Post Comment</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card sidebar-detail">
+      <h3>Metadata</h3>
+      <div class="meta-list">
+        <div class="meta-item">
+          <span class="meta-label">Created by</span>
+          <span class="meta-value">{{ task.createdByName }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Created</span>
+          <span class="meta-value">{{ task.createdAt }}</span>
+        </div>
+        <div class="meta-item" *ngIf="task.updatedAt">
+          <span class="meta-label">Updated</span>
+          <span class="meta-value">{{ task.updatedAt }}</span>
+        </div>
+        <div class="meta-item" *ngIf="task.completedAt">
+          <span class="meta-label">Completed</span>
+          <span class="meta-value">{{ task.completedAt }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

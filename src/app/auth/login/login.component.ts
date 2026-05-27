@@ -1,54 +1,47 @@
-// login.component.ts
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { AuthService } from '../../core/services/auth.service';
-import {
-  SocialAuthService,
-  GoogleSigninButtonModule
-} from '@abacritt/angularx-social-login';
+import { ToastService } from '../../core/services/toast.service';
+import { GoogleSigninButtonModule, SocialAuthService } from '@abacritt/angularx-social-login';
 
 import { API } from '../../core/api/api.config';
 import { ApiService } from '../../core/services/api.service';
 import { Subscription } from 'rxjs';
+import { ApiResponse } from '../../core/models/api.models';
+import { TokenResponse } from '../../core/models/auth.models';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [
-    CommonModule,
-    FormsModule,
-    RouterLink,
-    GoogleSigninButtonModule
-  ]
+  imports: [CommonModule, FormsModule, RouterLink, GoogleSigninButtonModule]
 })
 export class LoginComponent implements OnInit, OnDestroy {
   email = '';
   password = '';
   isLoading = false;
-  googleLoading = false;
 
   private authService = inject(AuthService);
   private api = inject(ApiService);
   private router = inject(Router);
-  private socialAuth = inject(SocialAuthService);
+  private toast = inject(ToastService);
+  private socialAuth? = inject(SocialAuthService, { optional: true });
 
   private authSub?: Subscription;
 
   ngOnInit() {
-    this.authSub = this.socialAuth.authState.subscribe({
+    this.authSub = this.socialAuth?.authState.subscribe({
       next: (user) => {
         if (user) {
           this.handleGoogleAuth(user);
         }
       },
-      error: (err) => {
-        console.error('Social auth error:', err);
-        this.googleLoading = false;
+      error: () => {
+        this.toast.error('Google sign-in service unavailable');
       }
     });
   }
@@ -59,25 +52,19 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   login() {
     if (this.isLoading) return;
-
     this.isLoading = true;
 
-    this.api.post<any>(API.AUTH.LOGIN, {
+    this.api.post<ApiResponse<TokenResponse>>(API.AUTH.LOGIN, {
       email: this.email,
       password: this.password
     }).subscribe({
       next: (res) => {
-        this.authService.storeTokens(
-          res.accessToken,
-          res.refreshToken
-        );
-
-        const role = this.authService.getUserRoleFromToken();
-        console.log('User role:', role);
-        this.redirectBasedOnRole(role);
+        const data = res.data!;
+        this.authService.storeTokens(data.accessToken, data.refreshToken);
+        this.redirectBasedOnRole(this.authService.getUserRole());
       },
       error: () => {
-        alert('Invalid email or password');
+        this.toast.error('Invalid email or password');
         this.isLoading = false;
       },
       complete: () => {
@@ -87,29 +74,17 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   private handleGoogleAuth(user: any) {
-    this.googleLoading = true;
-
-    this.api.post<any>(
-      API.AUTH.GOOGLE,
-      { idToken: user.idToken }
-    ).subscribe({
-      next: (res) => {
-        this.authService.storeTokens(
-          res.accessToken,
-          res.refreshToken
-        );
-
-        const role = this.authService.getUserRoleFromToken();
-        this.redirectBasedOnRole(role);
-      },
-      error: () => {
-        alert('Google authentication failed');
-        this.googleLoading = false;
-      },
-      complete: () => {
-        this.googleLoading = false;
-      }
-    });
+    this.api.post<ApiResponse<TokenResponse>>(API.AUTH.GOOGLE, { idToken: user.idToken })
+      .subscribe({
+        next: (res) => {
+          const data = res.data!;
+          this.authService.storeTokens(data.accessToken, data.refreshToken);
+          this.redirectBasedOnRole(this.authService.getUserRole());
+        },
+        error: () => {
+          this.toast.error('Google authentication failed');
+        }
+      });
   }
 
   private redirectBasedOnRole(role: string | null) {

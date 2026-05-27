@@ -60,9 +60,13 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
 
   &:hover {
     background: #2563eb;
+    text-decoration: none;
   }
 }
 
@@ -73,6 +77,7 @@
 }
 
 .project-card {
+  position: relative;
   background: #fff;
   border-radius: 16px;
   padding: 24px;
@@ -83,6 +88,38 @@
   &:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .delete-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+    padding: 4px 8px;
+    border-radius: 6px;
+
+    &:hover {
+      background: #fef2f2;
+    }
+  }
+
+  &:hover .delete-btn {
+    opacity: 1;
   }
 
   .card-top {

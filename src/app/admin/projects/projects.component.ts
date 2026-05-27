@@ -1,49 +1,73 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
+import { ApiService } from '../../core/services/api.service';
+import { ToastService } from '../../core/services/toast.service';
+import { API } from '../../core/api/api.config';
+import { ApiResponse } from '../../core/models/api.models';
+import { ProjectSummary } from '../../core/models/project.models';
 
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss']
 })
-export class ProjectsComponent {
-  
-projects = [
-  {
-    name: 'Website Redesign',
-    status: 'In Progress',
-    description: 'Complete overhaul of company website with modern UI/UX.',
-    owner: 'Sarah Johnson',
-    ownerAvatar: 'https://i.pravatar.cc/100?img=1',
-    progress: 75,
-    members: 8,
-    completedTasks: 34,
-    totalTasks: 45
-  },
-  {
-    name: 'Mobile App Development',
-    status: 'In Progress',
-    description: 'Native iOS and Android application for customers.',
-    owner: 'Michael Chen',
-    ownerAvatar: 'https://i.pravatar.cc/100?img=2',
-    progress: 45,
-    members: 12,
-    completedTasks: 31,
-    totalTasks: 68
-  },
-  {
-    name: 'Customer Portal Enhancement',
-    status: 'Completed',
-    description: 'Improving customer self-service experience.',
-    owner: 'Lisa Anderson',
-    ownerAvatar: 'https://i.pravatar.cc/100?img=3',
-    progress: 100,
-    members: 7,
-    completedTasks: 41,
-    totalTasks: 41
-  }
-];
+export class ProjectsComponent implements OnInit {
+  private api = inject(ApiService);
+  private toast = inject(ToastService);
+  private router = inject(Router);
 
+  projects: ProjectSummary[] = [];
+  filteredProjects: ProjectSummary[] = [];
+  activeFilter = 'all';
+  isLoading = true;
+
+  ngOnInit() {
+    this.loadProjects();
+  }
+
+  loadProjects() {
+    this.isLoading = true;
+    this.api.get<ApiResponse<ProjectSummary[]>>(API.PROJECTS).subscribe({
+      next: (res) => {
+        this.projects = res.data ?? [];
+        this.applyFilter();
+        this.isLoading = false;
+      },
+      error: () => {
+        this.toast.error('Failed to load projects');
+        this.isLoading = false;
+      }
+    });
+  }
+
+  setFilter(filter: string) {
+    this.activeFilter = filter;
+    this.applyFilter();
+  }
+
+  applyFilter() {
+    if (this.activeFilter === 'all') {
+      this.filteredProjects = this.projects;
+    } else {
+      this.filteredProjects = this.projects.filter(p => p.status === this.activeFilter);
+    }
+  }
+
+  deleteProject(id: string) {
+    if (!confirm('Delete this project and all its tasks?')) return;
+    this.api.delete<ApiResponse<any>>(`${API.PROJECTS}/${id}`).subscribe({
+      next: () => {
+        this.toast.success('Project deleted');
+        this.loadProjects();
+      },
+      error: () => this.toast.error('Failed to delete project')
+    });
+  }
+
+  getStatusClass(status: string): string {
+    return status.toLowerCase().replace(' ', '-');
+  }
 }

@@ -2,53 +2,25 @@
   <div class="logo">TaskFlow</div>
 
   <div class="menu">
-    <a
-      class="menu-item"
-      routerLink="/employee/dashboard"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
+    <a class="menu-item" routerLink="/employee/dashboard" routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }">
       Dashboard
     </a>
 
-    <a
-      class="menu-item"
-      routerLink="/employee/my-tasks"
-      routerLinkActive="active"
-    >
+    <a class="menu-item" routerLink="/employee/my-tasks" routerLinkActive="active">
       My Tasks
     </a>
 
-    <a
-      class="menu-item"
-      routerLink="/employee/profile"
-      routerLinkActive="active"
-    >
+    <a class="menu-item" routerLink="/employee/profile" routerLinkActive="active">
       My Profile
-    </a>
-
-    <a
-      class="menu-item"
-      routerLink="/employee/notifications"
-      routerLinkActive="active"
-    >
-      Notifications
-    </a>
-
-    <a
-      class="menu-item"
-      routerLink="/employee/settings"
-      routerLinkActive="active"
-    >
-      Settings
     </a>
   </div>
 
   <div class="user">
-    <img src="https://i.pravatar.cc/101" />
+    <div class="avatar-circle">{{ userInitial }}</div>
     <div class="info">
-      <strong>Sarah Johnson</strong>
-      <div>Employee</div>
+      <strong>{{ userName }}</strong>
+      <div>{{ userRole }}</div>
     </div>
   </div>
 </div>
