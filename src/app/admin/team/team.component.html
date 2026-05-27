@@ -1,22 +1,18 @@
 <div class="page-header">
   <div class="header-left">
     <h1>Team Management</h1>
-    <p class="subtitle">
-      Manage your team members, roles, and departments
-    </p>
+    <p class="subtitle">Manage your team members, roles, and departments</p>
   </div>
 </div>
 
-<!-- Stats -->
 <div class="team-stats">
   <div class="stat-card">
     <div class="stat-info">
       <span>Total Members</span>
-      <h2>{{ stats.total }}</h2>
+      <h2>{{ stats.totalMembers }}</h2>
     </div>
     <div class="stat-icon green">👥</div>
   </div>
-
   <div class="stat-card">
     <div class="stat-info">
       <span>Admins</span>
@@ -24,15 +20,6 @@
     </div>
     <div class="stat-icon red">🛡️</div>
   </div>
-
-  <div class="stat-card">
-    <div class="stat-info">
-      <span>Managers</span>
-      <h2>{{ stats.managers }}</h2>
-    </div>
-    <div class="stat-icon yellow">⭐</div>
-  </div>
-
   <div class="stat-card">
     <div class="stat-info">
       <span>Employees</span>
@@ -42,45 +29,29 @@
   </div>
 </div>
 
-<!-- Filters -->
 <div class="filter-bar">
-  <input
-    type="text"
-    placeholder="Search by name or email..."
-  />
-
-  <select>
-    <option>All Departments</option>
-    <option>Design</option>
-    <option>Development</option>
-    <option>Marketing</option>
+  <input type="text" [(ngModel)]="searchQuery" (input)="onSearch()" placeholder="Search by name or email..." />
+  <select [(ngModel)]="selectedRole" (change)="onRoleChange()">
+    <option value="all">All Roles</option>
+    <option value="admin">Admin</option>
+    <option value="employee">Employee</option>
   </select>
-
-  <select>
-    <option>All Roles</option>
-    <option>Admin</option>
-    <option>Manager</option>
-    <option>Employee</option>
-  </select>
-
-  <button class="primary-btn">+ Add Member</button>
 </div>
 
-<!-- Team Cards -->
-<div class="team-grid">
-  <div class="member-card" *ngFor="let m of members">
-    <img [src]="m.avatar" class="avatar" />
+<div class="loading-state" *ngIf="isLoading"><p>Loading team...</p></div>
 
-    <h3>{{ m.name }}</h3>
+<div class="team-grid" *ngIf="!isLoading">
+  <div class="empty-state" *ngIf="filteredMembers.length === 0">
+    <p>No team members found.</p>
+  </div>
+
+  <div class="member-card" *ngFor="let m of filteredMembers">
+    <div class="avatar-circle large">{{ m.fullName.charAt(0).toUpperCase() }}</div>
+    <h3>{{ m.fullName }}</h3>
     <p class="email">{{ m.email }}</p>
-
     <div class="badges">
-      <span class="badge role" [ngClass]="m.role.toLowerCase()">
-        {{ m.role }}
-      </span>
-      <span class="badge dept">{{ m.department }}</span>
+      <span class="badge role" [ngClass]="m.role.toLowerCase()">{{ m.role }}</span>
     </div>
-
     <div class="member-stats">
       <div>
         <span>Tasks Assigned</span>
@@ -91,14 +62,9 @@
         <strong class="green">{{ m.tasksCompleted }}</strong>
       </div>
       <div>
-        <span>Join Date</span>
-        <strong>{{ m.joinDate }}</strong>
+        <span>Joined</span>
+        <strong>{{ m.joinDate | date:'mediumDate' }}</strong>
       </div>
-    </div>
-
-    <div class="actions">
-      <button class="btn ghost">Edit</button>
-      <button class="btn danger">Remove</button>
     </div>
   </div>
 </div>

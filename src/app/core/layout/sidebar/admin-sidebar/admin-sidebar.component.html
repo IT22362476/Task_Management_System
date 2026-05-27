@@ -6,34 +6,25 @@
       [routerLinkActiveOptions]="{ exact: true }">
       Dashboard
     </a>
-
     <a class="menu-item" routerLink="/admin/projects" routerLinkActive="active">
       Projects
     </a>
-
     <a class="menu-item" routerLink="/admin/tasks" routerLinkActive="active">
       Tasks
     </a>
-
     <a class="menu-item" routerLink="/admin/team" routerLinkActive="active">
       Team
     </a>
-
     <a class="menu-item" routerLink="/admin/reports" routerLinkActive="active">
       Reports
     </a>
-
-    <a class="menu-item" routerLink="/settings" routerLinkActive="active">
-      Settings
-    </a>
   </div>
 
-
   <div class="user">
-    <img src="https://i.pravatar.cc/100" />
+    <div class="avatar-circle">{{ userInitial }}</div>
     <div class="info">
-      <strong>John Doe</strong>
-      <div>Admin</div>
+      <strong>{{ userName }}</strong>
+      <div>{{ userRole }}</div>
     </div>
   </div>
 </div>

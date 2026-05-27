@@ -1,4 +1,4 @@
-// main.ts - WORKING SOLUTION
+// main.ts
 import { bootstrapApplication } from '@angular/platform-browser';
 import { importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
@@ -10,8 +10,7 @@ import { routes } from './app/app.routes';
 // Import from the library
 import {
   SocialLoginModule,
-  GoogleLoginProvider,
-  SOCIAL_AUTH_CONFIG
+  GoogleLoginProvider
 } from '@abacritt/angularx-social-login';
 
 import { authInterceptor } from './app/core/interceptors/auth.interceptor';
@@ -26,13 +25,9 @@ bootstrapApplication(AppComponent, {
       withInterceptors([authInterceptor])
     ),
 
-    // 🔹 Import SocialLoginModule providers (optional, but good to include)
-    importProvidersFrom(SocialLoginModule),
-
-    // 🔹 SocialAuth configuration - USE THE CORRECT TOKEN!
-    {
-      provide: SOCIAL_AUTH_CONFIG,
-      useValue: {
+    // 🔹 SocialAuth configuration (uses SocialLoginModule.initialize for Angular 16 compat)
+    importProvidersFrom(
+      SocialLoginModule.initialize({
         autoLogin: false,
         providers: [
           {
@@ -45,7 +40,7 @@ bootstrapApplication(AppComponent, {
         onError: (err: any) => {
           console.error('Social auth error:', err);
         }
-      }
-    }
+      })
+    )
   ]
 }).catch(err => console.error(err));

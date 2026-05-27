@@ -1,80 +1,61 @@
 <div class="page-header">
   <div class="header-left">
     <h1>All Tasks</h1>
-    <p class="subtitle">Manage all tasks across {{ projectsCount }} projects</p>
+    <p class="subtitle" *ngIf="!isLoading">Manage all tasks across {{ projects.length }} projects</p>
   </div>
-
   <div class="header-right">
-    <select class="project-select">
-      <option>All Projects</option>
-      <option *ngFor="let p of projects">{{ p }}</option>
+    <select class="project-select" [ngModel]="selectedProject" (ngModelChange)="selectedProject=$event; onProjectChange()">
+      <option value="all">All Projects</option>
+      <option *ngFor="let p of projects" [value]="p.id">{{ p.name }}</option>
     </select>
-
-    <button class="primary-btn">+ Create Task</button>
+    <button class="primary-btn" (click)="goToCreate()">+ Create Task</button>
   </div>
 </div>
 
 <div class="search-bar">
-  <input
-    type="text"
-    placeholder="Search tasks by title, description, or assignee..."
-  />
+  <input type="text" [(ngModel)]="searchQuery" placeholder="Search tasks by title, description, or assignee..." />
 </div>
 
-<div class="task-stats">
-  <div class="stat-card active">
-    <h2>{{ stats.total }}</h2>
-    <span>All Tasks</span>
+<div class="task-stats" *ngIf="!isLoading">
+  <div class="stat-card" [class.active]="selectedStatus === 'all'" (click)="filterByStatus('all')">
+    <h2>{{ stats.total }}</h2><span>All Tasks</span>
   </div>
-  <div class="stat-card">
-    <h2>{{ stats.todo }}</h2>
-    <span>To Do</span>
-  </div>
-  <div class="stat-card">
-    <h2 class="blue">{{ stats.inProgress }}</h2>
-    <span>In Progress</span>
-  </div>
-  <div class="stat-card">
-    <h2 class="orange">{{ stats.review }}</h2>
-    <span>Review</span>
-  </div>
-  <div class="stat-card">
-    <h2 class="green">{{ stats.completed }}</h2>
-    <span>Completed</span>
+  <div class="stat-card" *ngFor="let s of statuses" [class.active]="selectedStatus === s.value" (click)="filterByStatus(s.value)">
+    <h2 [style.color]="s.color">{{ statForStatus(s.value) }}</h2>
+    <span>{{ s.label }}</span>
   </div>
 </div>
 
-<div class="task-list">
-  <div class="task-card" *ngFor="let task of tasks">
+<div class="loading-state" *ngIf="isLoading"><p>Loading tasks...</p></div>
+
+<div class="task-list" *ngIf="!isLoading">
+  <div class="empty-state" *ngIf="filteredTasks().length === 0">
+    <p>No tasks found. Create one to get started!</p>
+  </div>
+
+  <div class="task-card" *ngFor="let task of filteredTasks()">
     <div class="task-main">
-      <div>
+      <div class="task-body" (click)="goToDetail(task.id)">
         <h3>
           {{ task.title }}
-          <span class="priority" [ngClass]="task.priority">
-            {{ task.priority }}
-          </span>
+          <span class="priority" [ngClass]="priorityClass(task.priority)">{{ task.priority }}</span>
         </h3>
-        <p>{{ task.description }}</p>
-
+        <p *ngIf="task.description">{{ task.description }}</p>
         <div class="task-meta">
-          <span>📁 {{ task.project }}</span>
-          <span>👤 {{ task.assignee }}</span>
-          <span>📅 Due: {{ task.dueDate }}</span>
-
-          <span
-            class="tag"
-            *ngFor="let tag of task.tags"
-          >
-            {{ tag }}
-          </span>
+          <span>&#128194; {{ task.projectName }}</span>
+          <span *ngIf="task.assigneeName">&#128100; {{ task.assigneeName }}</span>
+          <span *ngIf="task.dueDate">&#128197; Due: {{ task.dueDate }}</span>
+          <span class="tag" *ngFor="let tag of task.labels" [style.background]="tag.color + '20'"
+                [style.color]="tag.color">{{ tag.name }}</span>
         </div>
       </div>
-
       <div class="task-actions">
-        <span class="status-pill" [ngClass]="task.status">
-          {{ task.statusLabel }}
-        </span>
-        <a class="details-link">View Details →</a>
+        <span class="status-pill" [ngClass]="task.status">{{ getStatusLabel(task.status) }}</span>
+        <select (change)="updateStatus(task.id, $event)" [value]="task.status" (click)="$event.stopPropagation()">
+          <option *ngFor="let s of statuses" [value]="s.value">{{ s.label }}</option>
+        </select>
+        <button class="edit-btn" (click)="goToEdit(task.id)">&#9998;</button>
+        <button class="delete-btn" (click)="deleteTask(task.id)">&#128465;</button>
       </div>
     </div>
   </div>
