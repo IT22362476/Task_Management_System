@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://localhost:5135/api'
+  apiUrl: 'https://taskmgr-app-prod.azurewebsites.net/api'
 };
