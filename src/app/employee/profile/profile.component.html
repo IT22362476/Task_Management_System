@@ -1,1 +1,116 @@
-<p>profile works!</p>
+<!-- Profile Header -->
+<div class="profile-header card">
+  <div class="profile-left">
+    <img
+      src="https://i.pravatar.cc/150?img=1"
+      class="avatar"
+      alt="Profile"
+    />
+
+    <div class="profile-info">
+      <h1>Sarah Johnson</h1>
+      <p class="role">Senior Designer</p>
+      <span class="team-pill">Design Team</span>
+    </div>
+  </div>
+
+  <button class="primary-btn">✎ Edit Profile</button>
+</div>
+
+<!-- Profile Details -->
+<div class="profile-details card">
+  <div class="detail">
+    <span>Email</span>
+    <strong>sarah.johnson@company.com</strong>
+  </div>
+
+  <div class="detail">
+    <span>Phone</span>
+    <strong>+1 (555) 123-4567</strong>
+  </div>
+
+  <div class="detail">
+    <span>Location</span>
+    <strong>San Francisco, CA</strong>
+  </div>
+
+  <div class="detail">
+    <span>Joined</span>
+    <strong>January 2023</strong>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="profile-stats">
+  <div class="stat-card">
+    <div class="icon blue">✔</div>
+    <div>
+      <h2>{{ stats.total }}</h2>
+      <span>Total Tasks</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="icon green">✓</div>
+    <div>
+      <h2>{{ stats.completed }}</h2>
+      <span>Completed</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="icon yellow">⏳</div>
+    <div>
+      <h2>{{ stats.inProgress }}</h2>
+      <span>In Progress</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="icon red">⚠</div>
+    <div>
+      <h2>{{ stats.overdue }}</h2>
+      <span>Overdue</span>
+    </div>
+  </div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+  <button class="tab active">Overview</button>
+  <button class="tab">My Tasks</button>
+  <button class="tab">Settings</button>
+</div>
+
+<!-- Content Grid -->
+<div class="profile-grid">
+  <!-- Recent Activity -->
+  <div class="card">
+    <h3>Recent Activity</h3>
+
+    <div class="activity-item" *ngFor="let a of activity">
+      <div class="activity-icon" [ngClass]="a.type">•</div>
+      <div>
+        <p>{{ a.text }}</p>
+        <span>{{ a.time }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upcoming Deadlines -->
+  <div class="card">
+    <h3>Upcoming Deadlines</h3>
+
+    <div class="deadline-item" *ngFor="let d of deadlines">
+      <div>
+        <strong>{{ d.title }}</strong>
+        <span>{{ d.project }}</span>
+      </div>
+
+      <div class="due">
+        <span>Due Date</span>
+        <strong>{{ d.date }}</strong>
+      </div>
+    </div>
+  </div>
+</div>

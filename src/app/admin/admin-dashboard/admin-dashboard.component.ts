@@ -1,7 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StatCardComponent } from "src/app/shared/components/stat-card/stat-card.component";
-import { ProgressBarComponent } from "src/app/shared/progress-bar/progress-bar.component";
+import { Router } from '@angular/router';
+import { ApiService } from '../../core/services/api.service';
+import { ToastService } from '../../core/services/toast.service';
+import { AuthService } from '../../core/services/auth.service';
+import { StatCardComponent } from '../../shared/components/stat-card/stat-card.component';
+import { ProgressBarComponent } from '../../shared/progress-bar/progress-bar.component';
+import { API } from '../../core/api/api.config';
+import { ApiResponse } from '../../core/models/api.models';
+import { AdminDashboard, ProjectProgress } from '../../core/models/dashboard.models';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -10,71 +17,84 @@ import { ProgressBarComponent } from "src/app/shared/progress-bar/progress-bar.c
   styleUrls: ['./admin-dashboard.component.scss'],
   imports: [CommonModule, StatCardComponent, ProgressBarComponent]
 })
-export class AdminDashboardComponent {
+export class AdminDashboardComponent implements OnInit {
+  private api = inject(ApiService);
+  private toast = inject(ToastService);
+  private router = inject(Router);
+  private auth = inject(AuthService);
 
-  projects = [
-    { id: 'p1', name: 'Website Redesign' },
-    { id: 'p2', name: 'Mobile App Development' },
-    { id: 'p3', name: 'Marketing Campaign' }
-  ];
+  userName = '';
 
-  stats = {
-    total: 156,
-    completed: 89,
-    pending: 52,
-    overdue: 15,
-    todo: 35,
-    inProgress: 42,
-    review: 25
-  };
+  stats = { total: 0, todo: 0, inProgress: 0, review: 0, completed: 0, overdue: 0 };
+  progress: ProjectProgress[] = [];
+  activities: Array<{ text: string; time: string }> = [];
+  deadlines: Array<{ title: string; date: string; urgent: boolean }> = [];
 
-  progress = [
-    { name: 'Website Redesign', percent: 75 },
-    { name: 'Mobile App Development', percent: 45 }
-  ];
+  isLoading = true;
 
-  onProjectChange(event: Event) {
-    const projectId = (event.target as HTMLSelectElement).value;
-
-    if (projectId === 'all') {
-      this.loadAllProjects();
-    } else {
-      this.loadProject(projectId);
+  ngOnInit() {
+    const token = this.auth.getAccessToken();
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        this.userName = payload['fullName'] || payload['email'] || 'Admin';
+      } catch { /* ignore */ }
     }
+    this.loadDashboard();
   }
 
-  loadAllProjects() {
-    // mock overall stats
-    this.stats = {
-      total: 156,
-      completed: 89,
-      pending: 52,
-      overdue: 15,
-      todo: 35,
-      inProgress: 42,
-      review: 25
-    };
-
-    this.progress = [
-      { name: 'Website Redesign', percent: 75 },
-      { name: 'Mobile App Development', percent: 45 }
-    ];
+  loadDashboard() {
+    this.isLoading = true;
+    this.api.get<ApiResponse<AdminDashboard>>(API.DASHBOARD.ADMIN).subscribe({
+      next: (res) => {
+        const data = res.data!;
+        this.stats = {
+          total: data.taskStats.total,
+          todo: data.taskStats.todo,
+          inProgress: data.taskStats.inProgress,
+          review: data.taskStats.review,
+          completed: data.taskStats.completed,
+          overdue: data.taskStats.overdue
+        };
+        this.progress = data.projectProgress;
+        this.activities = data.recentActivity.map(a => ({
+          text: `${a.actorName} ${this.formatAction(a.action)}`,
+          time: this.timeAgo(a.createdAt)
+        }));
+        this.deadlines = data.upcomingDeadlines.map(d => ({
+          title: d.title,
+          date: d.dueDate ? new Date(d.dueDate).toLocaleDateString() : 'No date',
+          urgent: d.daysRemaining <= 2
+        }));
+        this.isLoading = false;
+      },
+      error: () => {
+        this.toast.error('Failed to load dashboard');
+        this.isLoading = false;
+      }
+    });
   }
 
-  loadProject(projectId: string) {
-    // mock project-specific stats
-    this.stats = {
-      total: 42,
-      completed: 30,
-      pending: 10,
-      overdue: 2,
-      todo: 8,
-      inProgress: 14,
-      review: 6
-    };
+  viewAllTasks() {
+    this.router.navigate(['/admin/tasks']);
+  }
 
-    this.progress = [
-      { name: 'Selected Project', percent: 60 }
-    ];
+  private formatAction(action: string): string {
+    const map: Record<string, string> = {
+      'task_created': 'created a new task',
+      'comment_added': 'commented on a task',
+      'task_updated': 'updated a task'
+    };
+    return map[action] || action;
+  }
+
+  private timeAgo(dateStr: string): string {
+    const now = Date.now();
+    const date = new Date(dateStr).getTime();
+    const diff = Math.floor((now - date) / 1000);
+    if (diff < 60) return 'Just now';
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+    return `${Math.floor(diff / 86400)}d ago`;
   }
 }

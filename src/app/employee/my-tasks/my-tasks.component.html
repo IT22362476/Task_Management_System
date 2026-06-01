@@ -1,1 +1,62 @@
-<p>my-tasks works!</p>
+<div class="page-header">
+  <div class="header-left">
+    <h1>My Tasks</h1>
+    <p class="subtitle" *ngIf="!isLoading">Manage your assigned tasks</p>
+  </div>
+  <div class="header-right">
+    <input type="text" [(ngModel)]="searchQuery" (input)="applyFilters()" placeholder="Search tasks..." class="search-input" />
+  </div>
+</div>
+
+<div class="task-stats" *ngIf="!isLoading">
+  <div class="stat-card" [class.active]="selectedStatus === 'all'" (click)="filterByStatus('all')">
+    <h2>{{ stats.total }}</h2><span>All Tasks</span>
+  </div>
+  <div class="stat-card" [class.active]="selectedStatus === 'todo'" (click)="filterByStatus('todo')">
+    <h2>{{ stats.todo }}</h2><span>To Do</span>
+  </div>
+  <div class="stat-card" [class.active]="selectedStatus === 'in-progress'" (click)="filterByStatus('in-progress')">
+    <h2 class="blue">{{ stats.inProgress }}</h2><span>In Progress</span>
+  </div>
+  <div class="stat-card" [class.active]="selectedStatus === 'review'" (click)="filterByStatus('review')">
+    <h2 class="orange">{{ stats.review }}</h2><span>Review</span>
+  </div>
+  <div class="stat-card" [class.active]="selectedStatus === 'completed'" (click)="filterByStatus('completed')">
+    <h2 class="green">{{ stats.completed }}</h2><span>Completed</span>
+  </div>
+</div>
+
+<div class="loading-state" *ngIf="isLoading"><p>Loading tasks...</p></div>
+
+<div class="task-list" *ngIf="!isLoading">
+  <div class="empty-state" *ngIf="filteredTasksList.length === 0">
+    <p>No tasks assigned to you yet.</p>
+  </div>
+
+  <div class="task-card" *ngFor="let task of filteredTasksList">
+    <div class="task-main">
+      <div>
+        <h3>
+          {{ task.title }}
+          <span class="priority" [ngClass]="priorityClass(task.priority)">{{ task.priority }}</span>
+        </h3>
+        <p *ngIf="task.description">{{ task.description }}</p>
+        <div class="task-meta">
+          <span>📁 {{ task.projectName }}</span>
+          <span *ngIf="task.dueDate">📅 Due: {{ task.dueDate | date:'mediumDate' }}</span>
+          <span class="tag" *ngFor="let tag of task.labels" [style.background]="tag.color + '20'"
+                [style.color]="tag.color">{{ tag.name }}</span>
+        </div>
+      </div>
+      <div class="task-actions">
+        <span class="status-pill" [ngClass]="task.status">{{ task.status }}</span>
+        <select (change)="updateStatus(task.id, $event)" [value]="task.status">
+          <option value="todo">To Do</option>
+          <option value="in-progress">In Progress</option>
+          <option value="review">Review</option>
+          <option value="completed">Completed</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>

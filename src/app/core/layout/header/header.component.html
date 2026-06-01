@@ -1,24 +1,24 @@
 <header class="header">
-  <!-- Search (centered) -->
   <div class="search-wrapper">
     <input
       type="text"
+      [(ngModel)]="searchQuery"
+      (keyup.enter)="onSearch()"
       placeholder="Search tasks, projects, or people..."
     />
   </div>
 
-  <!-- Right actions -->
   <div class="header-actions">
-    <!-- Notifications -->
-    <button class="icon-btn">
-      🔔
-      <span class="badge">2</span>
+    <button class="icon-btn" (click)="logout()" title="Logout">
+      <span class="logout-icon">⏻</span>
     </button>
 
-    <!-- User -->
     <div class="user-info">
-      <img src="https://i.pravatar.cc/40" alt="User" />
-      <span class="chevron">▾</span>
+      <div class="avatar-circle">{{ userName.charAt(0).toUpperCase() }}</div>
+      <div class="user-details">
+        <span class="user-name">{{ userName }}</span>
+        <span class="user-role">{{ userRole }}</span>
+      </div>
     </div>
   </div>
 </header>

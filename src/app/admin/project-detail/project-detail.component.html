@@ -1,0 +1,87 @@
+<div class="page-header">
+  <div class="header-left">
+    <a routerLink="/admin/projects" class="back-link">&larr; Back to Projects</a>
+    <h1 *ngIf="project">{{ project.name }}</h1>
+    <p class="subtitle" *ngIf="project">{{ project.description || 'No description' }}</p>
+  </div>
+</div>
+
+<div class="loading-state" *ngIf="isLoading"><p>Loading project...</p></div>
+
+<ng-container *ngIf="!isLoading && project">
+  <div class="stats-row">
+    <div class="stat-box">
+      <span class="stat-number">{{ totalTasks }}</span>
+      <span class="stat-label">Total Tasks</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-number green">{{ completedTasks }}</span>
+      <span class="stat-label">Completed</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-number">{{ members.length }}</span>
+      <span class="stat-label">Members</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-number">{{ progressPercent }}%</span>
+      <span class="stat-label">Progress</span>
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <div class="form-card">
+      <div class="form-section">
+        <h2>Members ({{ members.length }})</h2>
+
+        <div class="member-row" *ngFor="let m of members">
+          <div class="member-info">
+            <div class="avatar-circle small">{{ m.name.charAt(0).toUpperCase() }}</div>
+            <div>
+              <strong>{{ m.name }}</strong>
+              <small>{{ m.email }} &mdash; {{ m.role }}</small>
+            </div>
+          </div>
+          <button class="btn ghost danger small" (click)="removeMember(m.userId, m.name)">Remove</button>
+        </div>
+
+        <div class="add-member-row" *ngIf="availableUsers.length > 0">
+          <select [(ngModel)]="selectedUserId" class="form-input">
+            <option value="">Select a user...</option>
+            <option *ngFor="let u of availableUsers" [value]="u.id">{{ u.fullName }} ({{ u.email }})</option>
+          </select>
+          <button class="primary-btn" (click)="addMember()" [disabled]="!selectedUserId">Add</button>
+        </div>
+        <p *ngIf="availableUsers.length === 0" class="no-data">All users are already members</p>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-section">
+        <h2>Project Info</h2>
+        <div class="meta-grid">
+          <div class="meta-item">
+            <span class="meta-label">Owner: </span>
+            <span class="meta-value">{{ project.ownerName }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Status: </span>
+            <span class="meta-value">{{ project.status }}</span>
+            <div class="status-change-row">
+              <select [(ngModel)]="newStatus" class="form-input small">
+                <option value="">Change status...</option>
+                <option value="planning">Planning</option>
+                <option value="in-progress">In Progress</option>
+                <option value="completed">Completed</option>
+              </select>
+              <button class="primary-btn small" (click)="changeStatus()" [disabled]="!newStatus">Update</button>
+            </div>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Created: </span>
+            <span class="meta-value">{{ project.createdAt }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
