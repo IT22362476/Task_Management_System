@@ -1,4 +1,3 @@
-// main.ts
 import { bootstrapApplication } from '@angular/platform-browser';
 import { importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
@@ -7,34 +6,25 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
 
-// Import from the library
 import {
   SocialLoginModule,
   GoogleLoginProvider
 } from '@abacritt/angularx-social-login';
 
 import { authInterceptor } from './app/core/interceptors/auth.interceptor';
+import { environment } from './environments/environment';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    // 🔹 Router
     provideRouter(routes),
-
-    // 🔹 Http + interceptor
-    provideHttpClient(
-      withInterceptors([authInterceptor])
-    ),
-
-    // 🔹 SocialAuth configuration (uses SocialLoginModule.initialize for Angular 16 compat)
+    provideHttpClient(withInterceptors([authInterceptor])),
     importProvidersFrom(
       SocialLoginModule.initialize({
         autoLogin: false,
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(
-              '709410394647-krce6dqhhtd2mttp6fvo6plfnl5ubh8d.apps.googleusercontent.com'
-            )
+            provider: new GoogleLoginProvider(environment.googleClientId)
           }
         ],
         onError: (err: any) => {
