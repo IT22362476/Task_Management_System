@@ -25,6 +25,20 @@
   object-fit: cover;
 }
 
+.avatar-circle.large {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: #3b82f6;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 36px;
+  flex-shrink: 0;
+}
+
 .profile-info {
   h1 {
     margin: 0;
