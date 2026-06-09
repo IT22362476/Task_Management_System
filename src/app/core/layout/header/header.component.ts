@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { SocialAuthService } from '@abacritt/angularx-social-login';
 
 @Component({
   selector: 'app-header',
@@ -17,21 +18,25 @@ export class HeaderComponent implements OnInit {
 
   private auth = inject(AuthService);
   private router = inject(Router);
+  private socialAuth? = inject(SocialAuthService, { optional: true });
 
   ngOnInit() {
-    const token = this.auth.getAccessToken();
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        this.userName = payload['fullName'] || payload['email'] || 'User';
-        this.userRole = this.auth.getUserRole() || '';
-      } catch {
-        this.userName = 'User';
-      }
+    const user = this.auth.getUser();
+    if (user) {
+      this.userName = user.fullName;
+      this.userRole = user.role;
     }
   }
 
-  logout() {
+  async logout() {
+    // Sign out from Google if user logged in via Google
+    try {
+      await this.socialAuth?.signOut();
+    } catch {
+      // Google sign-out failed silently — app logout still proceeds
+    }
+
+    // Sign out from the app
     this.auth.logout();
     this.router.navigate(['/login']);
   }
